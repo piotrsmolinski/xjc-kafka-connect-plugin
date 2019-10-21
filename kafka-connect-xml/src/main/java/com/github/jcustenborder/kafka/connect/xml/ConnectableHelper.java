@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -197,6 +198,8 @@ public class ConnectableHelper {
       for (Object o : value) {
         if (o instanceof Connectable) {
           result.add(((Connectable)o).toStruct());
+        } else if (o instanceof BigDecimal) {
+          result.add(normalize((BigDecimal) o));
         } else {
           result.add(o);
         }
@@ -359,7 +362,13 @@ public class ConnectableHelper {
 
   public static void toDecimal(Struct struct, String field, BigDecimal value) {
     log.trace("toString() - field = '{}' value = '{}'", field, value);
-    struct.put(field, value);
+    struct.put(field, normalize(value));
+  }
+
+  public static BigDecimal normalize(BigDecimal value) {
+    if (value==null) return null;
+    // scale same as in KafkaConnectPlugin decimal registration
+    return value.setScale(12, RoundingMode.HALF_UP);
   }
 
   public static void toXmlgDay(Struct struct, String field, XMLGregorianCalendar value) {
