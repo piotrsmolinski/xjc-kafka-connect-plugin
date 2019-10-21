@@ -348,7 +348,7 @@ public class ConnectableHelper {
   }
 
   public static void toDateTime(Struct struct, String field, XMLGregorianCalendar value) {
-    log.trace("toString() - field = '{}' value = '{}'", field, value);
+    log.trace("toDateTime() - field = '{}' value = '{}'", field, value);
     Date result;
 
     if (null == value) {
@@ -361,7 +361,7 @@ public class ConnectableHelper {
   }
 
   public static void toDecimal(Struct struct, String field, BigDecimal value) {
-    log.trace("toString() - field = '{}' value = '{}'", field, value);
+    log.trace("toDecimal() - field = '{}' value = '{}'", field, value);
     struct.put(field, normalize(value));
   }
 
