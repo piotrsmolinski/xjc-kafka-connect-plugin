@@ -199,6 +199,7 @@ public class KafkaConnectPlugin extends AbstractParameterizablePlugin {
     add(result, this.types.schemaBuilder().staticInvoke("int16"), this.types.schema().staticRef("INT16_SCHEMA"), "toInt16", "fromInt16", "unsignedByte");
     add(result, this.types.schemaBuilder().staticInvoke("array").arg(this.types.schema().staticRef("STRING")), null, "toArray", "fromArray", "IDREFS");
 
+    add(result, this.types.decimal().staticInvoke("builder").arg(JExpr.lit(12)), null, "toDecimal", "fromDecimal", "decimal");
 
     return ImmutableMap.copyOf(result);
   }
@@ -389,6 +390,7 @@ public class KafkaConnectPlugin extends AbstractParameterizablePlugin {
       fieldState.fieldVar(jFieldVar);
 
       if (!Strings.isNullOrEmpty(xmlType)) {
+        // xmlType may be applied to list property
         log.trace("field() - xmlType = '{}'", xmlType);
         XmlTypeState xmlTypeState = this.xmlTypeLookup.get(xmlType);
         if (null == xmlTypeState) {

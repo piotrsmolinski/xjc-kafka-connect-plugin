@@ -1,4 +1,6 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+            jaxb:version="1.0"
             targetNamespace="urn:books"
             xmlns:bks="urn:books">
 
@@ -23,7 +25,21 @@
             <xsd:element name="pub_date" type="xsd:date"/>
             <xsd:element name="review" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="note" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element name="score" type="bks:score" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="score" type="bks:score" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:appinfo>
+                  <jaxb:property>
+                    <jaxb:baseType>
+                      <jaxb:javaType
+                          name="java.math.BigDecimal"
+                          parseMethod="com.github.jcustenborder.kafka.connect.xml.JaxbHelper.parseDecimal"
+                          printMethod="com.github.jcustenborder.kafka.connect.xml.JaxbHelper.printDecimal"
+                          />
+                    </jaxb:baseType>
+                  </jaxb:property>
+                </xsd:appinfo>
+              </xsd:annotation>
+            </xsd:element>
         </xsd:sequence>
         <xsd:attribute name="id" type="xsd:string"/>
     </xsd:complexType>
